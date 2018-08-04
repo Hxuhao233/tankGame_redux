@@ -1,0 +1,84 @@
+= 坦克大战游戏 -- redux理念实践
+:toc: left
+:toclevels: 3
+:toc-title: 目录
+:numbered:
+:sectanchors:
+:sectlinks:
+:sectnums:
+
+== 介绍
+
+=== 前言
+
+借此游戏，实现我对redux的理解。
+
+****
+redux是在flux的基础上产生的，基本思想是保证数据的单向流动，同时便于控制、使用、测试。
+****
+
+TIP: 注意了，这里只是模拟redux，不是使用redux库实现的。这里不是react组件，还没有实现用父级组件与子级组件的数据流动。
+
+
+=== 安装
+
+`npm install`
+
+`npm run start`
+
+按照cmd控制台显示的域名来访问
+
+=== 玩法
+
+点击鼠标发射炮弹
+
+键盘方向键控制坦克移动
+
+== 技术特点（flux数据流）
+
+自制redux数据流实现
+
+=== 数据流redux
+
+* component 发生事件 ->
+* action 收到核心信号，（进行异步操作，）输出事件类型与关数据 ->
+* reducer 收到关键数据，通过数据处理，输出新的状态state ->
+* state 更新数据 ->
+* component 接收新state，重新渲染
+
+解说图 todo
+
+=== 对比
+
+传统写法也是这样逻辑， 但redux让模块划分更加清晰，让维护相当友好；
+
+==== redux理念
+
+. 解耦出
+	.. action 异步操作模块
+	.. reducer 数据处理模块【pure function】
+	.. state 数据
+	.. component 渲染模块
+. 想看app的关键渲染数据，直接看state，不用找代码；
+. 想看某个模块的数据处理？debug一下reducer方法；
+. 想看某个模块的事件触发？debug一下dispatch方法；
+. ...
+
+==== 传统
+
+. 逻辑与数据处理遍布各处，混乱，入手理解很麻烦。
+. 不同项目有不同格式规范
+
+=== 牺牲
+
+虽然牺牲了开发上需要定义常量与发射action信号处理数据
+
+=== 开发遇到的问题
+
+如何实现跨组件的状态共享
+
+答：通过connect方法的参数mapStateToProps获取其他模块的状态数据
+
+如何实现动画轮询的间隔渲染
+
+答：暂时在组件自身控制，未来交给action处理。
