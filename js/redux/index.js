@@ -1,61 +1,77 @@
 // 缓存：绑定reducer的组件
-let state = {};
-const bindStateComponent = [];
+import {getState, setState} from './store';
+/*
+ * reducer
+ * */
 let reducerHandlers = {};
-const noneFunc = function () {};
-let timer;
-
-export const combineReducer = obj => {
-    reducerHandlers = Object.assign(reducerHandlers, obj);
-    dispatch();
-};
-
-export const getState = () => Object.assign({}, state);
-
-export const dispatch = (obj) => {
+const addReducer = obj => Object.assign(reducerHandlers, obj);
+const dispatch = (obj) => {
     let needRePaint = false;
     Object.keys(reducerHandlers).forEach(key => {
-        const newState = reducerHandlers[key](state[key], obj);
-        if(newState !== state[key]){
-            state[key] = newState;
+        const
+          state = getState()[key],
+          newState = reducerHandlers[key](state, obj);
+        if(newState !== state){
+            setState({
+                [key]: newState
+            });
             needRePaint = true;
         }
     });
     if(needRePaint){
-        if(timer){
-            clearTimeout(timer);
-        }
-        timer = setTimeout(() => {
-            triggerComponent(state)
-        }, 2);
+        triggerComponentReRender();
     }
 };
-
-export const triggerComponent = (state) => {
+/*
+* Handler for State and Component, through reducer;
+* */
+const bindStateComponent = [];
+const componentReRender = () => {
     bindStateComponent.forEach(item => {
         const
-            props = Object.assign(
-                {},
-                item.childPropsHandler(state),
-                item.dispatchPropHandler(dispatch, getState)
-            ),
-            {component} = item;
+          props = Object.assign(
+            {},
+            item.childPropsHandler(getState()),
+            item.dispatchPropHandler(dispatch, getState)
+          ),
+          {component} = item;
         if(component.componentWillUpdate(props, component._props) && component.render){
             component.render(props);
         }
         component._props = props;
     });
-    timer = null;
+};
+let timer, triggerComponentReRender = async () => {
+    if(timer){
+        clearTimeout(timer);
+    }
+    timer = setTimeout(() => {
+        componentReRender();
+        timer = null;
+    }, 2);
+};
+const subscribeComponentToState = obj => {
+    bindStateComponent.push(obj);
+};
+/*
+* 暴露方法: 绑定组件
+* */
+export const combineReducer = obj => {
+    addReducer(obj);
+    dispatch();
 };
 // highOrderComponent
+const noneFunc = function () {};
 export const connect = (childPropsHandler = noneFunc, dispatchPropHandler = noneFunc) => (Component = noneFunc) => {
     return function WrapComponent (...argument) {
-        this.child = new Component(...argument);
-        this.child.componentWillUpdate = this.child.componentWillUpdate || function () {
+        // 构建
+        const component = new Component(...argument);
+        component.componentWillUpdate = component.componentWillUpdate || function () {
             return true;
         };
-        bindStateComponent.push({
-            component: this.child,
+        // 绑定组件到state
+        subscribeComponentToState({
+            component,
             childPropsHandler,
             dispatchPropHandler
         });
