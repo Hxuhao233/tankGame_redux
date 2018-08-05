@@ -1,4 +1,3 @@
-// 缓存：绑定reducer的组件
 import {getState, setState} from './store';
 /*
  * reducer
