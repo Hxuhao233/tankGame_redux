@@ -9,7 +9,6 @@ import {
 } from '../../tools/tools';
 import {fireBullet, moveBullet, brokeGrid} from "./action";
 
-let timer;
 class BulletCanvas {
     constructor (){
         this.context = renderContext().context;
@@ -39,10 +38,6 @@ class BulletCanvas {
             this.inited = true;
         }
         const {list} = props.bullets;
-        if((!list || !list.length) && timer){
-            window.clearInterval(timer);
-            timer = null;
-        }
         this.context.clearRect(0, 0, canvasWith, canvasHeight);
         return list.forEach(bullet => !bullet.isCollided && this.paintBullet(bullet));
     }
@@ -50,12 +45,7 @@ class BulletCanvas {
 
 export default connect(state => state, (dispatch, getState) => ({
     fireBullet () {
-        dispatch(fireBullet(getState().tank_player));
-        if(!timer){
-            timer = window.setInterval(() => {
-                dispatch(moveBullet(getState().tileMap));
-            }, 50);
-        }
+        fireBullet(getState().tank_player)(dispatch, getState);
     },
     upDateMap(brokenGrids) {
         dispatch(brokeGrid(brokenGrids));

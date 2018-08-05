@@ -34,6 +34,7 @@ export const bulletReducer = (state = initialState, action = {}) => {
                     x: action.tankX + config.tankSize / 2 - config.bulletSize/2,
                     y: action.tankY + config.tankSize / 2 - config.bulletSize/2,
                     speed: action.speed,
+                    id: action.id,
                     isCollided: false,
                     size: bulletSize,
                     dir: action.dir
