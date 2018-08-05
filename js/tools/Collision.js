@@ -1,5 +1,37 @@
 import {keyboard, GRID} from "../constant";
 const {UP, DOWN, LEFT, RIGHT} = keyboard;
+export function CheckIntersect(object1, object2, overlap) {
+    //    x-轴                      x-轴
+    //  A1------>B1 C1              A2------>B2 C2
+    //  +--------+   ^              +--------+   ^
+    //  | object1|   | y-轴         | object2|   | y-轴
+    //  |        |   |              |        |   |
+    //  +--------+  D1              +--------+  D2
+    //
+    //overlap是重叠的区域值
+    A1 = object1.x + overlap;
+    B1 = object1.x + object1.size - overlap;
+    C1 = object1.y + overlap;
+    D1 = object1.y + object1.size - overlap;
+
+    A2 = object2.x + overlap;
+    B2 = object2.x + object2.size - overlap;
+    C2 = object2.y + overlap;
+    D2 = object2.y + object2.size - overlap;
+
+    //假如他们在x-轴重叠
+    if(A1 >= A2 && A1 <= B2
+      || B1 >= A2 && B1 <= B2)
+    {
+        //判断y-轴重叠
+        if(C1 >= C2 && C1 <= D2 || D1 >= C2 && D1 <= D2)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 /**
  * 坦克与地图块碰撞
  * @param tank 坦克对象

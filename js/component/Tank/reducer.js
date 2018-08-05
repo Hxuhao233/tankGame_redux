@@ -16,12 +16,14 @@ export const getDegree = keyCode => ({
     [keyboard.DOWN]: 180
 })[keyCode];
 
+const initialPos = [64, 0];
 const initialState = {
-    x: 64,
-    y: 0,
+    tempX: initialPos[0],
+    tempY: initialPos[1],
+    x: initialPos[0],
+    y: initialPos[1],
     id: 'player_1',
-    xSpeed: 0,
-    ySpeed: 0,
+    size: config.tankSize,
     dir: keyboard.DOWN
 };
 
@@ -29,34 +31,19 @@ export const tankReducer = (state = initialState, action = {}) => {
     switch (action.type) {
         case EVENT_KEY_DOWN:
             const {keyCode, map} = action;
-            let xSpeed = getXSpeed(keyCode);
-            let ySpeed = getYSpeed(keyCode);
-            let x = state.x + xSpeed;
-            let y = state.y + ySpeed;
-
-            let obj = Object.assign({}, state);
-            obj.tempX = state.x + xSpeed;
-            obj.tempY = state.y + ySpeed;
-            obj.dir = keyCode;
-            obj.size = config.tankSize;
-
-            let isCollision = tankMapCollision(obj, map);
+            let tank = Object.assign({}, state, {
+                tempX: state.x + getXSpeed(keyCode),
+                tempY: state.y + getYSpeed(keyCode),
+                dir: keyCode
+            });
+            // 判断是否碰到箱子
+            let isCollision = tankMapCollision(tank, map);
             if(!isCollision){
-                return Object.assign({}, state, {
-                    xSpeed,
-                    ySpeed,
-                    x,
-                    y,
-                    dir: keyCode
-                });
+                tank.x = tank.tempX;
+                tank.y = tank.tempY;
+                return tank;
             }else{
-                return Object.assign({}, state, {
-                    xSpeed,
-                    ySpeed,
-                    x: obj.x,
-                    y: obj.y,
-                    dir: keyCode
-                });
+                return tank;
             }
             break;
         case EVENT_KEY_UP:
