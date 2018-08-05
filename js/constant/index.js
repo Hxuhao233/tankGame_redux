@@ -1,11 +1,3 @@
-// tanks_sheet.png是集成图, 有32个图像组成, 这里使用到以下四个
-export const
-    ZZ = 31,  	// 箱子(横向)
-    NN = 32, 	// 箱子(竖向)
-    __ =  1, 	// 通道
-    QQ = 11, 	// 坦克
-    XX = 26; 	// 墙
-
 const Keyboard = function(){
     this.UP = 38;
     this.DOWN = 40;

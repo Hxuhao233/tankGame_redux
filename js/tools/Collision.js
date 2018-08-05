@@ -40,7 +40,7 @@ export function tankMapCollision(tank, mapobj){
         }
 
         for(let i=0;i<tileNum && colIndex+i < mapobj.wTileCount ;i++){
-            let mapContent = mapobj.mapLevel[rowIndex][colIndex+i];
+            let mapContent = mapobj.tiles[rowIndex][colIndex+i];
             if(mapContent == GRID){
                 if(tank.dir == UP){
                     tank.y = mapobj.offsetY + rowIndex * mapobj.tileSize + mapobj.tileSize - overlap;
@@ -58,7 +58,7 @@ export function tankMapCollision(tank, mapobj){
             tileNum = parseInt(tempHeight/mapobj.tileSize) + 1;
         }
         for(let i=0;i<tileNum && rowIndex+i < mapobj.HTileCount;i++){
-            let mapContent = mapobj.mapLevel[rowIndex+i][colIndex];
+            let mapContent = mapobj.tiles[rowIndex+i][colIndex];
             if(mapContent == GRID){
                 if(tank.dir == LEFT){
                     tank.x = mapobj.offsetX + colIndex * mapobj.tileSize + mapobj.tileSize - overlap;
@@ -111,7 +111,7 @@ export function bulletMapCollision(bullet,mapobj){
             tileNum = parseInt(tempWidth/mapobj.tileSize) + 1;
         }
         for(var i=0;i<tileNum && colIndex+i < mapobj.wTileCount ;i++){
-            var mapContent = mapobj.mapLevel[rowIndex][colIndex+i];
+            var mapContent = mapobj.tiles[rowIndex][colIndex+i];
             if(mapContent == GRID){
                 result = true;
                 // //墙被打掉
@@ -126,7 +126,7 @@ export function bulletMapCollision(bullet,mapobj){
             tileNum = parseInt(tempHeight/mapobj.tileSize) + 1;
         }
         for(var i=0;i<tileNum && rowIndex+i < mapobj.HTileCount;i++){
-            var mapContent = mapobj.mapLevel[rowIndex+i][colIndex];
+            var mapContent = mapobj.tiles[rowIndex+i][colIndex];
             if(mapContent == GRID){
                 result = true;
                 // //墙被打掉

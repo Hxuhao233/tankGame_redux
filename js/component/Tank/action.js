@@ -4,10 +4,10 @@ import {
     EVENT_KEY_UP
 } from '../../constant/index';
 
-export const action_key_down = (keyCode, tileMap) => ({
+export const action_key_down = (keyCode, map) => ({
     type: EVENT_KEY_DOWN,
     keyCode,
-    tileMap
+    map
 });
 export const action_key_up = keyCode => ({
     type: EVENT_KEY_UP,

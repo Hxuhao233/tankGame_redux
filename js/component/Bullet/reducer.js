@@ -43,17 +43,10 @@ export const bulletReducer = (state = initialState, action = {}) => {
             };
         case EVENT_BULLET_FLY:
             const bullets = list.slice();
-            const {tileMap} = action;
+            const {map} = action;
             bullets.forEach(bullet => {
                 update(bullet);
-                var collideGrid = bulletMapCollision(bullet, {
-                    offsetX: 0,
-                    offsetY: 0,
-                    tileSize: config.tileSize,
-                    wTileCount: tileMap[0].length,
-                    HTileCount: tileMap.length,
-                    mapLevel: tileMap
-                });
+                var collideGrid = bulletMapCollision(bullet, map);
                 if(collideGrid === true){
                     bullet.isCollided = true;
                 }else if (collideGrid.length){

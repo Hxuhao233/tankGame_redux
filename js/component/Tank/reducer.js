@@ -28,7 +28,7 @@ const initialState = {
 export const tankReducer = (state = initialState, action = {}) => {
     switch (action.type) {
         case EVENT_KEY_DOWN:
-            const {keyCode, tileMap} = action;
+            const {keyCode, map} = action;
             let xSpeed = getXSpeed(keyCode);
             let ySpeed = getYSpeed(keyCode);
             let x = state.x + xSpeed;
@@ -40,14 +40,7 @@ export const tankReducer = (state = initialState, action = {}) => {
             obj.dir = keyCode;
             obj.size = config.tankSize;
 
-            let isCollision = tankMapCollision(obj, {
-                offsetX: 0,
-                offsetY: 0,
-                tileSize: config.tileSize,
-                wTileCount: tileMap[0].length,
-                HTileCount: tileMap.length,
-                mapLevel: tileMap
-            });
+            let isCollision = tankMapCollision(obj, map);
             if(!isCollision){
                 return Object.assign({}, state, {
                     xSpeed,
@@ -65,11 +58,6 @@ export const tankReducer = (state = initialState, action = {}) => {
                     dir: keyCode
                 });
             }
-
-
-            // if(xSpeed || ySpeed){
-            //
-            // }
             break;
         case EVENT_KEY_UP:
             return Object.assign({}, state, {

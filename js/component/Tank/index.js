@@ -18,6 +18,12 @@ class TankCanvas {
         document.body.addEventListener('keydown', props.onKeyDown);
         document.body.addEventListener('keyup', props.onKeyUp);
     }
+    componentWillUpdate (newProps, oldProps) {
+        if(oldProps && newProps.tank_player === oldProps.tank_player){
+            return false;
+        }
+        return true;
+    }
     render(props){
         if(!this.inited){
             this.bindEvent(props);
@@ -48,6 +54,6 @@ export default connect(state => {
         tank_player: state.tank_player
     };
 }, (dispatch, getState) => ({
-    onKeyDown: ({keyCode} = {}) => dispatch(action_key_down(keyCode, getState().tileMap)),
-    onKeyUp: ({keyCode} = {}) => dispatch(action_key_up(keyCode)),
+    onKeyDown: ({keyCode} = {}) => dispatch(action_key_down(keyCode, getState().map)),
+    onKeyUp: ({keyCode} = {}) => dispatch(action_key_up(keyCode))
 }))(TankCanvas);

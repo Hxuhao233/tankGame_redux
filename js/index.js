@@ -1,4 +1,3 @@
-// import App from './component/App';
 import '../css/index.css';
 import {combineReducer} from './redux/index';
 import {tankReducer} from './component/Tank/reducer';
@@ -19,7 +18,7 @@ class App {
         new BulletCanvas();
         // 初始化数据处理器
         combineReducer({
-            tileMap: mapReducer,
+            map: mapReducer,
             tank_player: tankReducer,
             bullets: bulletReducer
         });
