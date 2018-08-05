@@ -26,14 +26,16 @@ export const fireBullet = (tank) => (dispatch, getState) => {
 };
 
 export const moveBullet = (dispatch, getState) => {
-    const {map, bullets} = getState();
+    const {map, bullets, tank_player, enemyTanks} = getState();
     if(!bullets.list || !bullets.list.length){
         window.clearInterval(timer);
         timer = null;
     }
     dispatch({
         type: EVENT_BULLET_FLY,
-        map
+        map,
+        tank_player,
+        enemyTanks
     });
 };
 
