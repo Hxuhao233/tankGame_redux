@@ -1,10 +1,10 @@
 import '../css/index.css';
 import {combineReducer} from './redux/index';
-import {tankReducer} from './component/Tank/reducer';
+import {tankReducer} from './component/PlayerTank/reducer';
 import {mapReducer} from './component/Map/reducer';
 import {bulletReducer} from './component/Bullet/reducer';
 import MapCanvas from './component/Map/index';
-import TankCanvas from "./component/Tank/index";
+import PlayerTankCanvas from "./component/PlayerTank/index";
 import BulletCanvas from "./component/Bullet/index";
 
 class App {
@@ -14,7 +14,7 @@ class App {
     async init(){
         await this.preLoad();
         new MapCanvas();
-        new TankCanvas();
+        new PlayerTankCanvas();
         new BulletCanvas();
         // 初始化数据处理器
         combineReducer({
