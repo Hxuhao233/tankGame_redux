@@ -1,14 +1,13 @@
 import {MAP, tileSize} from '../../constant/config';
-import {REPAINT_MAP, STREET} from "../../constant";
+import {REPAINT_MAP, STREET, CHANGE_MAP} from "../../constant";
 
-const tiles = MAP[1];
 export const initialState = {
-    tiles,
+    tiles: [],
     offsetX: 0,
     offsetY: 0,
     tileSize: tileSize,
-    wTileCount: tiles[0].length,
-    HTileCount: tiles.length
+    wTileCount: 0,
+    HTileCount: 0
 };
 
 export const mapReducer = (state = initialState, action = {}) => {
@@ -22,7 +21,14 @@ export const mapReducer = (state = initialState, action = {}) => {
                 });
                 return Object.assign({}, state, {tiles});
             }
-
+            break;
+        case CHANGE_MAP:
+            const tiles = MAP[action.level];
+            return Object.assign({}, state, {
+                tiles,
+                wTileCount: tiles[0].length,
+                HTileCount: tiles.length
+            });
     }
     return state;
 };

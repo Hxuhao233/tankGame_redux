@@ -1,19 +1,67 @@
-import {speed} from '../../constant/config';
-import * as config from '../../constant/config';
-import {tankMapCollision} from '../../tools/Collision';
 import {
-    keyboard,
-    EVENT_KEY_DOWN,
-    EVENT_KEY_UP
+    RENDER_ENEMY_TANK,
+    CHANGE_ENEMY_DIR,
+    ENEMY_TANK_MOVING
 } from '../../constant/index';
+import {getTankNextPos} from '../../tools/tools';
+import * as config from '../../constant/config';
 
 const initialState = {
     list: [],
 };
 
 export const enemyTankReducer = (state = initialState, action = {}) => {
+    const {list} = state;
     switch (action.type) {
-
+        case ENEMY_TANK_MOVING:
+            let newList = list.map(function (item) {
+                const nextPos = getTankNextPos(item, action.map);
+                if(nextPos){
+                    return nextPos;
+                }
+                return item;
+            });
+            return Object.assign({}, state, {list: newList});
+            break;
+        case CHANGE_ENEMY_DIR:
+            const {changeDirList} = action;
+            let _newList = list.slice();
+            changeDirList.forEach(item => {
+                _newList.forEach((_item, index) => {
+                    if(item.id === _item.id){
+                        _item.dir = item.dir;
+                    }
+                })
+            });
+            // let newList = list.map(function (item) {
+            //     if(item.isHitWall){
+            //         return item;
+            //     }
+            //     const nextPos = getTankNextPos(item, action.map);
+            //     if(nextPos){
+            //         return nextPos;
+            //     }
+            //     return item;
+            // });
+            return Object.assign({}, state, {list: _newList});
+            break;
+        case RENDER_ENEMY_TANK:
+            console.log('enemy list', action);
+            let _list = list.slice();
+            const {pos, dir, id} = action;
+            if(pos && !_list.some(item => item.id === id)){
+                _list.push({
+                    speed:config.speed,
+                    dir,
+                    x: pos.x,
+                    y: pos.y,
+                    id,
+                    size: config.tankSize,
+                    isHitWall: false
+                });
+                return Object.assign({}, state, {list: _list});
+            }
+            break;
     }
     return state;
 };

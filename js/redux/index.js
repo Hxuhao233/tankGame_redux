@@ -24,18 +24,10 @@ const dispatch = (obj) => {
 /*
 * Handler for State and Component, through reducer;
 * */
-const bindStateComponent = [];
+const componentsBindWithStore = [];
+const subscribeComponentToStore = obj => componentsBindWithStore.push(obj);
 const componentReRender = () => {
-    bindStateComponent.forEach(item => {
-        const
-            {component} = item,
-            props = component.__getProps(),
-            oldProps = component.props;
-        component.props = props;
-        if(component.componentWillUpdate(props, oldProps) && component.render){
-            component.render(props);
-        }
-    });
+    componentsBindWithStore.forEach(item => item.render());
 };
 let timer, triggerComponentReRender = async () => {
     if(timer){
@@ -45,9 +37,6 @@ let timer, triggerComponentReRender = async () => {
         componentReRender();
         timer = null;
     }, 2);
-};
-const subscribeComponentToState = obj => {
-    bindStateComponent.push(obj);
 };
 /*
 * 暴露方法: 绑定组件
@@ -70,20 +59,25 @@ export const connect = (childPropsHandler = defaultChildPropsHandler, dispatchPr
         );
     };
     return class WrapComponent extends Component {
-        constructor(parentProps) {
-            const props = getProps(parentProps);
-            super(props);
-            this.props = props;
-            this.__getProps = getProps;
-            this.componentWillUpdate = this.componentWillUpdate || function () {
-                return true;
+        constructor(initialParentProps) {
+            super(
+                getProps(initialParentProps)
+            );
+            const originalRender = (this.render || noneFunc).bind(this);
+            // 重写render
+            this.render = parentProps => {
+                const
+                    props = getProps(parentProps || initialParentProps),
+                    oldProps = this.props;
+                this.props = props;
+                if(!this.componentWillUpdate || this.componentWillUpdate(props, oldProps)){
+                    originalRender(props);
+                }
             };
-            // 绑定组件到state
-            subscribeComponentToState({
-                component: this
-            });
+            // 绑定组件到store
+            subscribeComponentToStore(this);
             // 渲染
-            this.render && this.render(props);
+            this.render();
         }
     }
 };

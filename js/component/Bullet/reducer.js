@@ -30,18 +30,19 @@ export const bulletReducer = (state = initialState, action = {}) => {
     let {list, brokeGrids, brokeTanks} = state;
     switch (action.type) {
         case RENDER_BULLET:
-            if(list.some(item => item.id === action.id)){
+            const {tank} = action;
+            if(list.some(item => item.id === tank.id)){
                 return state;
             }
             return Object.assign({}, state, {
                 list: [].concat(list, {
-                    x: action.tankX + config.tankSize / 2 - config.bulletSize/2,
-                    y: action.tankY + config.tankSize / 2 - config.bulletSize/2,
-                    speed: action.speed,
-                    id: action.id,
+                    x: tank.x + config.tankSize / 2 - config.bulletSize/2,
+                    y: tank.y + config.tankSize / 2 - config.bulletSize/2,
+                    speed: config.bulletSpeed,
+                    id: tank.id,
                     isCollided: false,
-                    size: bulletSize,
-                    dir: action.dir
+                    size: config.bulletSize,
+                    dir: tank.dir
                 })
             });
         case EVENT_BULLET_FLY:
@@ -66,7 +67,6 @@ export const bulletReducer = (state = initialState, action = {}) => {
                     if(tank && bullet.id !== tank.id){
                         // 判断是否碰到坦克
                         let collideTank = checkIntersect(bullet, tank);
-                        console.log('collideTank', collideTank);
                         brokeTanks = brokeTanks.concat(tank);
                     }
                 });

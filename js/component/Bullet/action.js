@@ -1,9 +1,10 @@
 import {EVENT_BULLET_FLY, RENDER_BULLET, REPAINT_MAP} from '../../constant/index';
 import {bulletSpeed} from '../../constant/config';
+import {timer} from '../../tools/tools';
 
-let timer;
+let _timer;
 
-export const fireBullet = (tank) => (dispatch, getState) => {
+export const fireBullet = (dispatch, getState) => (tank) => {
     const {bullets} = getState();
     const isFiring = bullets.list.some(item => {
         return item.id === tank.id;
@@ -12,24 +13,21 @@ export const fireBullet = (tank) => (dispatch, getState) => {
         dispatch({
             type: RENDER_BULLET,
             speed: bulletSpeed,
-            tankX: tank.x,
-            tankY: tank.y,
-            id: tank.id,
-            dir: tank.dir
+            tank
         });
     }
-    if(!timer){
-        timer = window.setInterval(() => {
+    if(!_timer){
+        _timer = timer.setInterval(() => {
             moveBullet(dispatch, getState);
-        }, 50);
+        });
     }
 };
 
 export const moveBullet = (dispatch, getState) => {
     const {map, bullets, playerTank, enemyTanks} = getState();
     if(!bullets.list || !bullets.list.length){
-        window.clearInterval(timer);
-        timer = null;
+        timer.clearInterval(_timer);
+        _timer = null;
     }
     dispatch({
         type: EVENT_BULLET_FLY,

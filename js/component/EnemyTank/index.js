@@ -3,25 +3,30 @@ import Tank from '../common/Tank';
 import {action_renderTank} from "../EnemyTank/action";
 
 class enemyTank extends Tank{
-    constructor(config){
+    constructor(props){
         super();
-        this.config = config;
+        this.renderEnemyList(props.parentProps.enemy, props.renderTank);
     }
     componentWillUpdate (newProps, oldProps) {
-        return !oldProps || newProps.enemyTank !== oldProps.enemyTank;
+        return !oldProps || newProps.enemy !== oldProps.enemy;
     }
-    renderEnemy(){
-        this.props && this.props.renderTank(this.config);
+    renderEnemyList(config, renderTank){
+        let numbers = config.numbers;
+        let posList = config.pos;
+        let timer = window.setInterval(() => {
+            if(numbers < 0){
+                return window.clearInterval(timer);
+            }
+            let randomPos = posList[(posList.length - 1) % numbers--];
+            renderTank(randomPos, numbers+1);
+        }, config.renderGap);
     }
     render(props){
         this.clearCanvas();
-        props.enemyTank.list.forEach(tank =>{
-            this.paintTank(tank);
-        });
+        props.enemy.list.forEach(tank => this.paintTank(tank));
     }
 }
 
-export default connect(state => state, (dispatch, getState) => ({
-    renderTank: (pos) => action_renderTank(pos)(dispatch, getState),
-    onKeyUp: ({keyCode} = {}) => dispatch(action_key_up(keyCode))
+export default connect(undefined, (dispatch, getState) => ({
+    renderTank: (pos, id) => action_renderTank(pos, id)(dispatch, getState)
 }))(enemyTank);

@@ -7,10 +7,14 @@ import {
 import {
     renderContext,
 } from '../../tools/tools';
+import {
+    action_change_map,
+} from './action';
 
 class MapCanvas {
-    constructor (){
+    constructor (props) {
         this.context = renderContext().context;
+        props.changeMap(props.parentProps.level);
     }
     componentWillUpdate (newProps, oldProps) {
         return !oldProps || newProps.map !== oldProps.map;
@@ -30,4 +34,8 @@ class MapCanvas {
     }
 }
 
-export default connect()(MapCanvas);
+export default connect(undefined, dispatch => ({
+    changeMap(level){
+        dispatch(action_change_map(level));
+    }
+}))(MapCanvas);

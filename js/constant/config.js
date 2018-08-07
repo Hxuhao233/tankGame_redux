@@ -5,8 +5,8 @@ export const tankSize = 32;
 export const tileSize = 16;
 export const bulletSize = 3;
 export const imgSplitSize = 32;
-export const speed = 4;
-export const bulletSpeed = 4;
+export const speed = 2;
+export const bulletSpeed = 6;
 
 export const allImg = new Image();
 allImg.src = "./image/tanks_sheet.png";
@@ -49,10 +49,11 @@ export const MAP = {
 export const AppConfig = {
     level: 1,
     enemy: {
-        numbers: 5,
+        numbers: 1,
         renderGap: 1000,
         pos: [{x: tileSize * 2, y: 0}, {x: tileSize * 10, y: 0}, {x: tileSize * 18, y: 0}]
     },
+    enemyTanks:[],
     player: {
         x: tileSize * 9,
         y: tileSize * 24,

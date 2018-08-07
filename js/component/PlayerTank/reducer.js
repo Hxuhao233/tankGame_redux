@@ -1,6 +1,5 @@
 import {speed} from '../../constant/config';
 import * as config from '../../constant/config';
-import {tankMapCollision} from '../../tools/Collision';
 import {
     keyboard,
     SET_PLAYER_POS,
@@ -8,15 +7,8 @@ import {
     TANK_MOVING,
     EVENT_KEY_UP
 } from '../../constant/index';
-const {UP, DOWN, LEFT, RIGHT} = keyboard;
-export const getXSpeed = key => key === LEFT ? -speed : key === RIGHT ? speed : 0;
-export const getYSpeed = key => key === UP ? -speed : key === DOWN ? speed : 0;
-export const getDegree = keyCode => ({
-    [LEFT]: 270,
-    [RIGHT]: 90,
-    [UP]: 0,
-    [DOWN]: 180
-})[keyCode];
+const {UP, DOWN} = keyboard;
+import {getTankNextPos} from '../../tools/tools';
 
 const initialState = {
     id: 'player_1',
@@ -27,21 +19,9 @@ const initialState = {
 export const playerTankReducer = (state = initialState, action = {}) => {
     switch (action.type) {
         case TANK_MOVING:
-            if(state.speed){
-                const {map} = action;
-                let tank = Object.assign({}, state, {
-                    tempX: state.x + getXSpeed(state.dir),
-                    tempY: state.y + getYSpeed(state.dir)
-                });
-                // 判断是否碰到箱子
-                let isCollision = tankMapCollision(tank, map);
-                if(!isCollision){
-                    tank.x = tank.tempX;
-                    tank.y = tank.tempY;
-                    return tank;
-                }else{
-                    return tank;
-                }
+            const nextPos = getTankNextPos(state, action.map);
+            if(nextPos){
+                return nextPos;
             }
             break;
         case EVENT_KEY_UP:

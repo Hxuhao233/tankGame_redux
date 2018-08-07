@@ -58,6 +58,9 @@ export const REPAINT_MAP = 'REPAINT_MAP';
 export const TANK_MOVING = 'TANK_MOVING';
 export const RENDER_ENEMY_TANK = 'RENDER_ENEMY_TANK';
 export const SET_PLAYER_POS = 'SET_PLAYER_POS';
+export const CHANGE_MAP = 'CHANGE_MAP';
+export const CHANGE_ENEMY_DIR = 'CHANGE_ENEMY_DIR';
+export const ENEMY_TANK_MOVING = 'ENEMY_TANK_MOVING';
 
 export const GRID = 26;
 export const STREET = 1;

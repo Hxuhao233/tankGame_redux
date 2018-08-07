@@ -6,7 +6,7 @@ class PlayerTank extends Tank{
     constructor(props){
         super();
         this.bindEvent(props);
-        props.setPos(props.parentProps);
+        props.setPos(props.parentProps.player);
     }
     bindEvent (props) {
         document.body.addEventListener('keydown', props.onKeyDown);
