@@ -13,7 +13,6 @@ let _timer;
 const dirList = [LEFT, UP, RIGHT, DOWN];
 const getRandom = () => Math.floor(0.5 - Math.random());
 const getRandomDIR = dir => {
-    // console.log('uuuuu', dirList.indexOf(dir) + 1, dirList.length);
     return dirList[(dirList.indexOf(dir) + 1) % (dirList.length)]
 };
 

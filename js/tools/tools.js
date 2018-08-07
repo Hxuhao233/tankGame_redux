@@ -24,7 +24,6 @@ export const timer = {
     }
 };
 
-
 export const getXSpeed = key => key === LEFT ? -speed : key === RIGHT ? speed : 0;
 export const getYSpeed = key => key === UP ? -speed : key === DOWN ? speed : 0;
 export const getTankNextPos = (state, map) => {

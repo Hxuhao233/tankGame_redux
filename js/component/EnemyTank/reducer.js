@@ -15,12 +15,9 @@ export const enemyTankReducer = (state = initialState, action = {}) => {
     const {list} = state;
     switch (action.type) {
         case BROKE_TANK:
-            console.log('action.tankIdList', action.tankIdList)
             let remainList = list.filter(item => {
                 return !(action.tankIdList.indexOf(item.id) >= 0);
             });
-            console.log('remainList', remainList.map(i => i.id));
-
             return Object.assign({}, state, {list: remainList});
         case ENEMY_TANK_MOVING:
             let newList = list.map(function (item) {
