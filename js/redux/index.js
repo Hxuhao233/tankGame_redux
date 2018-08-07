@@ -1,5 +1,4 @@
 import {getState, setState} from './store';
-import Tank from "../component/common/Tank";
 /*
  * reducer
  * */
@@ -29,13 +28,8 @@ const bindStateComponent = [];
 const componentReRender = () => {
     bindStateComponent.forEach(item => {
         const
-            props = Object.assign(
-                {},
-                // {parentProps: item.parentProps},
-                item.childPropsHandler(getState(), item.parentProps),
-                item.dispatchPropHandler(dispatch, getState)
-            ),
             {component} = item,
+            props = component.__getProps(),
             oldProps = component.props;
         component.props = props;
         if(component.componentWillUpdate(props, oldProps) && component.render){
@@ -80,27 +74,16 @@ export const connect = (childPropsHandler = defaultChildPropsHandler, dispatchPr
             const props = getProps(parentProps);
             super(props);
             this.props = props;
+            this.__getProps = getProps;
             this.componentWillUpdate = this.componentWillUpdate || function () {
                 return true;
             };
             // 绑定组件到state
             subscribeComponentToState({
-                component: this,
-                parentProps,
-                childPropsHandler,
-                dispatchPropHandler
+                component: this
             });
             // 渲染
             this.render && this.render();
         }
     }
-    // return function WrapComponent (...argument) {
-    //     // 构建
-    //     // const component = new Component(...argument);
-    //     component.componentWillUpdate = component.componentWillUpdate || function () {
-    //         return true;
-    //     };
-    //
-    //     componentReRender();
-    // }
 };
