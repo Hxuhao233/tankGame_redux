@@ -4,16 +4,18 @@ import {
     canvasWith,
     canvasHeight
 } from '../../constant/config';
+import {keyboard} from '../../constant/index';
 import {
     renderContext,
 } from '../../tools/tools';
 import {fireBullet, moveBullet, brokeGrid} from "./action";
 
 class BulletCanvas {
-    constructor (){
+    constructor (props){
         this.context = renderContext().context;
         this.context.fillStyle = '#0c7';
         this.paintBullet = this.paintBullet.bind(this);
+        this.bindEvent(props);
     }
     componentWillUpdate (newProps, oldProps) {
         if(newProps && newProps.bullets.brokeGrids.length){
@@ -33,11 +35,7 @@ class BulletCanvas {
         document.body.addEventListener('click', props.fireBullet);
     }
     render(props){
-        if(!this.inited){
-            this.bindEvent(props);
-            this.inited = true;
-        }
-        const {list} = props.bullets;
+        const {list} = this.props.bullets;
         this.context.clearRect(0, 0, canvasWith, canvasHeight);
         return list.forEach(bullet => !bullet.isCollided && this.paintBullet(bullet));
     }

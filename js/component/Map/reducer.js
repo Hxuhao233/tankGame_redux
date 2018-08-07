@@ -1,7 +1,7 @@
 import {MAP, tileSize} from '../../constant/config';
 import {REPAINT_MAP, STREET} from "../../constant";
 
-const tiles = MAP.level_1;
+const tiles = MAP[1];
 export const initialState = {
     tiles,
     offsetX: 0,

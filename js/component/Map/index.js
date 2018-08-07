@@ -13,13 +13,10 @@ class MapCanvas {
         this.context = renderContext().context;
     }
     componentWillUpdate (newProps, oldProps) {
-        if(oldProps && newProps.map === oldProps.map){
-            return false;
-        }
-        return true;
+        return !oldProps || newProps.map !== oldProps.map;
     }
-    render (props) {
-        const {tiles} = props.map;
+    render () {
+        const {tiles} = this.props.map;
         const mapRows = tiles.length;
         const mapCols = tiles[0].length;
         for (let rowCtr=0;rowCtr<mapRows;rowCtr++) {
@@ -33,4 +30,4 @@ class MapCanvas {
     }
 }
 
-export default connect(state => state)(MapCanvas);
+export default connect()(MapCanvas);

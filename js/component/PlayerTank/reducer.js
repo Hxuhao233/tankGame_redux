@@ -3,35 +3,30 @@ import * as config from '../../constant/config';
 import {tankMapCollision} from '../../tools/Collision';
 import {
     keyboard,
+    SET_PLAYER_POS,
     EVENT_KEY_DOWN,
     TANK_MOVING,
     EVENT_KEY_UP
 } from '../../constant/index';
-
-export const getXSpeed = key => key === keyboard.LEFT ? -speed : key === keyboard.RIGHT ? speed : 0;
-export const getYSpeed = key => key === keyboard.UP ? -speed : key === keyboard.DOWN ? speed : 0;
+const {UP, DOWN, LEFT, RIGHT} = keyboard;
+export const getXSpeed = key => key === LEFT ? -speed : key === RIGHT ? speed : 0;
+export const getYSpeed = key => key === UP ? -speed : key === DOWN ? speed : 0;
 export const getDegree = keyCode => ({
-    [keyboard.LEFT]: 270,
-    [keyboard.RIGHT]: 90,
-    [keyboard.UP]: 0,
-    [keyboard.DOWN]: 180
+    [LEFT]: 270,
+    [RIGHT]: 90,
+    [UP]: 0,
+    [DOWN]: 180
 })[keyCode];
 
-const initialPos = [64, 0];
 const initialState = {
-    tempX: initialPos[0],
-    tempY: initialPos[1],
-    x: initialPos[0],
-    y: initialPos[1],
     id: 'player_1',
     size: config.tankSize,
-    dir: keyboard.DOWN
+    dir: DOWN
 };
 
 export const playerTankReducer = (state = initialState, action = {}) => {
     switch (action.type) {
         case TANK_MOVING:
-            console.log(1)
             if(state.speed){
                 const {map} = action;
                 let tank = Object.assign({}, state, {
@@ -57,6 +52,14 @@ export const playerTankReducer = (state = initialState, action = {}) => {
             return Object.assign({}, state, {
                 speed,
                 dir: action.keyCode
+            });
+        case SET_PLAYER_POS:
+            return Object.assign({}, state, {
+                x: action.pos.x,
+                y: action.pos.y,
+                tempX: action.pos.x,
+                tempY: action.pos.y,
+                dir: action.pos.dir || UP
             });
     }
     return state;

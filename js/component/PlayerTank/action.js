@@ -1,5 +1,6 @@
 import {
     EVENT_KEY_DOWN,
+    SET_PLAYER_POS,
     TANK_MOVING,
     EVENT_KEY_UP
 } from '../../constant/index';
@@ -14,12 +15,10 @@ export const action_key_down = (keyCode, map) => (dispatch, getState) => {
         map
     });
     if(!_timer){
-        _timer = timer.setInterval(() => {
-            dispatch({
-                type: TANK_MOVING,
-                map: getState().map
-            });
-        });
+        _timer = timer.setInterval(() => dispatch({
+            type: TANK_MOVING,
+            map: getState().map
+        }));
     }
 };
 export const action_key_up = keyCode => {
@@ -32,3 +31,7 @@ export const action_key_up = keyCode => {
         keyCode
     };
 };
+export const action_set_position = pos => ({
+    type: SET_PLAYER_POS,
+    pos
+});

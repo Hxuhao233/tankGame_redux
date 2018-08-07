@@ -9,16 +9,21 @@ import PlayerTankCanvas from "./component/PlayerTank/index";
 import EnemyTankCanvas from "./component/EnemyTank/index";
 import BulletCanvas from "./component/Bullet/index";
 
+import {AppConfig} from './constant/config';
+
 class App {
-    constructor () {
-        this.init();
+    constructor (config) {
+        this.init(config);
     }
-    async init(){
+    async init(config){
         await this.preLoad();
-        new MapCanvas();
-        new PlayerTankCanvas();
-        new EnemyTankCanvas();
+        this.initStore();
+        new MapCanvas(config.level);
+        new PlayerTankCanvas(config.player);
+        // new EnemyTankCanvas(config.enemy);
         new BulletCanvas();
+    }
+    initStore(){
         // 初始化数据处理器
         combineReducer({
             map: mapReducer,
@@ -36,4 +41,4 @@ class App {
     }
 }
 
-new App();
+new App(AppConfig);

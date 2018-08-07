@@ -11,12 +11,12 @@ export const bulletSpeed = 4;
 export const allImg = new Image();
 allImg.src = "./image/tanks_sheet.png";
 
-import {STREET, GRID} from "./index";
+import {STREET, GRID, keyboard} from "./index";
 
 const _ = STREET;
 const X = GRID;
 export const MAP = {
-    "level_1":[
+    1:[
         [_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
         [_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],
         [_,_,X,X,_,_,X,X,_,_,X,X,_,_,X,X,_,_,X,X,_,_,X,X,_,_],
@@ -44,4 +44,18 @@ export const MAP = {
         [_,_,_,_,_,_,_,_,_,_,_,X,_,_,X,_,_,_,_,_,_,_,_,_,_,_],
         [_,_,_,_,_,_,_,_,_,_,_,X,_,_,X,_,_,_,_,_,_,_,_,_,_,_],
     ]
+};
+
+export const AppConfig = {
+    level: 1,
+    enemy: {
+        numbers: 5,
+        renderGap: 1000,
+        pos: [{x: tileSize * 2, y: 0}, {x: tileSize * 10, y: 0}, {x: tileSize * 18, y: 0}]
+    },
+    player: {
+        x: tileSize * 9,
+        y: tileSize * 24,
+        dir: keyboard.UP
+    }
 };

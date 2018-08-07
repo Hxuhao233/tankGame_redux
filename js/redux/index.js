@@ -1,4 +1,5 @@
 import {getState, setState} from './store';
+import Tank from "../component/common/Tank";
 /*
  * reducer
  * */
@@ -28,16 +29,18 @@ const bindStateComponent = [];
 const componentReRender = () => {
     bindStateComponent.forEach(item => {
         const
-          props = Object.assign(
-            {},
-            item.childPropsHandler(getState()),
-            item.dispatchPropHandler(dispatch, getState)
-          ),
-          {component} = item;
-        if(component.componentWillUpdate(props, component._props) && component.render){
+            props = Object.assign(
+                {},
+                // {parentProps: item.parentProps},
+                item.childPropsHandler(getState(), item.parentProps),
+                item.dispatchPropHandler(dispatch, getState)
+            ),
+            {component} = item,
+            oldProps = component.props;
+        component.props = props;
+        if(component.componentWillUpdate(props, oldProps) && component.render){
             component.render(props);
         }
-        component._props = props;
     });
 };
 let timer, triggerComponentReRender = async () => {
@@ -61,18 +64,43 @@ export const combineReducer = obj => {
 };
 // highOrderComponent
 const noneFunc = function () {};
-export const connect = (childPropsHandler = noneFunc, dispatchPropHandler = noneFunc) => (Component = noneFunc) => {
-    return function WrapComponent (...argument) {
-        // 构建
-        const component = new Component(...argument);
-        component.componentWillUpdate = component.componentWillUpdate || function () {
-            return true;
-        };
-        // 绑定组件到state
-        subscribeComponentToState({
-            component,
-            childPropsHandler,
-            dispatchPropHandler
-        });
+const defaultChildPropsHandler = function (state, parentProps) {
+    return Object.assign({}, state, {parentProps});
+};
+export const connect = (childPropsHandler = defaultChildPropsHandler, dispatchPropHandler = noneFunc) => (Component = noneFunc) => {
+    const getProps = (parentProps) => {
+        return Object.assign(
+            {},
+            childPropsHandler(getState(), parentProps),
+            dispatchPropHandler(dispatch, getState)
+        );
+    };
+    return class WrapComponent extends Component {
+        constructor(parentProps) {
+            const props = getProps(parentProps);
+            super(props);
+            this.props = props;
+            this.componentWillUpdate = this.componentWillUpdate || function () {
+                return true;
+            };
+            // 绑定组件到state
+            subscribeComponentToState({
+                component: this,
+                parentProps,
+                childPropsHandler,
+                dispatchPropHandler
+            });
+            // 渲染
+            this.render && this.render();
+        }
     }
+    // return function WrapComponent (...argument) {
+    //     // 构建
+    //     // const component = new Component(...argument);
+    //     component.componentWillUpdate = component.componentWillUpdate || function () {
+    //         return true;
+    //     };
+    //
+    //     componentReRender();
+    // }
 };
