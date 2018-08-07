@@ -26,6 +26,7 @@ export const playerTankReducer = (state = initialState, action = {}) => {
                     isBroken: true
                 });
             }
+            break;
         case TANK_MOVING:
             const nextPos = getTankNextPos(state, action.map);
             if(nextPos){

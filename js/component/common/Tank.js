@@ -12,12 +12,16 @@ export const getDegree = keyCode => ({
     [keyboard.UP]: 0,
     [keyboard.DOWN]: 180
 })[keyCode];
-const animationFrames = [1,2,3,4,5,6,7,8];
+const animationFrames = {
+    1: [1,2,3,4,5,6,7,8],
+    2: [9,10,11,12,13,14,15,16],
+};
 
 class Tank {
-    constructor (){
+    constructor (type){
         this.context = renderContext().context;
         this.frameIndex = 0;
+        this.animationFrames = animationFrames[type];
     }
     clearCanvas(){
         this.context.clearRect(0, 0, canvasWith, canvasHeight);
@@ -27,8 +31,9 @@ class Tank {
             return;
         }
         this.context.save();
-        let sourceX=Math.floor(animationFrames[this.frameIndex] % 8) * 32;
-        let sourceY=Math.floor(animationFrames[this.frameIndex] / 8) * 32;
+        const {animationFrames, frameIndex} = this;
+        let sourceX=Math.floor(animationFrames[frameIndex] % 8) * 32;
+        let sourceY=Math.floor(animationFrames[frameIndex] / 8) * 32;
         let currentDegree = getDegree(config.dir);
         let fixX = - tankSize / 2;
         let fixY = - tankSize / 2;

@@ -4,13 +4,17 @@ import Tank from '../common/Tank';
 
 class PlayerTank extends Tank{
     constructor(props){
-        super();
+        super(1);
         this.bindEvent(props);
         props.setPos(props.parentProps.player);
     }
     bindEvent (props) {
         document.body.addEventListener('keydown', props.onKeyDown);
         document.body.addEventListener('keyup', props.onKeyUp);
+    }
+    removeEvent (props) {
+        document.body.removeEventListener('keydown', props.onKeyDown);
+        document.body.removeEventListener('keyup', props.onKeyUp);
     }
     componentWillUpdate (newProps, oldProps) {
         return !oldProps || newProps.playerTank !== oldProps.playerTank;
@@ -19,6 +23,8 @@ class PlayerTank extends Tank{
         this.clearCanvas();
         if(!props.playerTank.isBroken){
             this.paintTank(props.playerTank);
+        }else{
+            this.removeEvent(props);
         }
     }
 }

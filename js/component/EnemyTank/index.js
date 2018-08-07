@@ -4,7 +4,7 @@ import {action_renderTank} from "../EnemyTank/action";
 
 class enemyTank extends Tank{
     constructor(props){
-        super();
+        super(2);
         this.renderEnemyList(props.parentProps.enemy, props.renderTank);
     }
     componentWillUpdate (newProps, oldProps) {

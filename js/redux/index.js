@@ -51,12 +51,12 @@ const defaultMapStateToProps = function (state, parentProps) {
     return Object.assign({}, state, {parentProps});
 };
 export const connect = (mapStateToProps = defaultMapStateToProps, mapDispatchToProps = noneFunc) => (Component = noneFunc) => {
-    // const dispatchProps = mapDispatchToProps(dispatch, getState);
+    const dispatchProps = mapDispatchToProps(dispatch, getState);
     const getProps = (parentProps) => {
         return Object.assign(
             {},
             mapStateToProps(getState(), parentProps),
-            mapDispatchToProps(dispatch, getState)
+            dispatchProps
         );
     };
     return class WrapComponent extends Component {
