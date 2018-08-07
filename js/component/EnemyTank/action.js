@@ -55,6 +55,7 @@ const onInterval = (dispatch, getState) => () => {
         list.forEach(fireBullet(dispatch, getState));
     }else{
         timer.clearInterval(_timer);
+        _timer = null;
     }
 };
 export const action_renderTank = (pos, id) => (dispatch, getState) => {
