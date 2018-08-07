@@ -23,6 +23,7 @@ class PlayerTank extends Tank{
     }
 }
 export default connect(state => state, (dispatch, getState) => ({
-    onKeyDown: ({keyCode} = {}) => dispatch(action_key_down(keyCode, getState().map)),
+    // onKeyDown: ({keyCode} = {}) => dispatch(action_key_down(keyCode, getState().map)),
+    onKeyDown: ({keyCode} = {}) => action_key_down(keyCode, getState().map)(dispatch, getState),
     onKeyUp: ({keyCode} = {}) => dispatch(action_key_up(keyCode))
 }))(PlayerTank);

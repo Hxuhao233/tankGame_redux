@@ -4,6 +4,7 @@ import {tankMapCollision} from '../../tools/Collision';
 import {
     keyboard,
     EVENT_KEY_DOWN,
+    TANK_MOVING,
     EVENT_KEY_UP
 } from '../../constant/index';
 
@@ -29,27 +30,33 @@ const initialState = {
 
 export const playerTankReducer = (state = initialState, action = {}) => {
     switch (action.type) {
-        case EVENT_KEY_DOWN:
-            const {keyCode, map} = action;
-            let tank = Object.assign({}, state, {
-                tempX: state.x + getXSpeed(keyCode),
-                tempY: state.y + getYSpeed(keyCode),
-                dir: keyCode
-            });
-            // 判断是否碰到箱子
-            let isCollision = tankMapCollision(tank, map);
-            if(!isCollision){
-                tank.x = tank.tempX;
-                tank.y = tank.tempY;
-                return tank;
-            }else{
-                return tank;
+        case TANK_MOVING:
+            console.log(1)
+            if(state.speed){
+                const {map} = action;
+                let tank = Object.assign({}, state, {
+                    tempX: state.x + getXSpeed(state.dir),
+                    tempY: state.y + getYSpeed(state.dir)
+                });
+                // 判断是否碰到箱子
+                let isCollision = tankMapCollision(tank, map);
+                if(!isCollision){
+                    tank.x = tank.tempX;
+                    tank.y = tank.tempY;
+                    return tank;
+                }else{
+                    return tank;
+                }
             }
             break;
         case EVENT_KEY_UP:
             return Object.assign({}, state, {
-                xSpeed: 0,
-                ySpeed: 0,
+                speed: 0
+            });
+        case EVENT_KEY_DOWN:
+            return Object.assign({}, state, {
+                speed,
+                dir: action.keyCode
             });
     }
     return state;

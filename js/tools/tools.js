@@ -10,3 +10,12 @@ export const renderContext  = () => {
         context: MapCanvas.getContext('2d')
     };
 };
+
+export const timer = {
+    setInterval(callback, gap){
+        return window.setInterval(callback, gap || 16.67);
+    },
+    clearInterval(timerId){
+        return window.clearInterval(timerId);
+    }
+};
