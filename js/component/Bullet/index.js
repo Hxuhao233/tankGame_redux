@@ -45,7 +45,7 @@ class BulletCanvas {
 
 export default connect(state => state, (dispatch, getState) => ({
     fireBullet () {
-        fireBullet(getState().tank_player)(dispatch, getState);
+        fireBullet(getState().playerTank)(dispatch, getState);
     },
     upDateMap(brokenGrids) {
         dispatch(brokeGrid(brokenGrids));

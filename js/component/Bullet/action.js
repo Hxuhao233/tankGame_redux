@@ -26,7 +26,7 @@ export const fireBullet = (tank) => (dispatch, getState) => {
 };
 
 export const moveBullet = (dispatch, getState) => {
-    const {map, bullets, tank_player, enemyTanks} = getState();
+    const {map, bullets, playerTank, enemyTanks} = getState();
     if(!bullets.list || !bullets.list.length){
         window.clearInterval(timer);
         timer = null;
@@ -34,7 +34,7 @@ export const moveBullet = (dispatch, getState) => {
     dispatch({
         type: EVENT_BULLET_FLY,
         map,
-        tank_player,
+        playerTank,
         enemyTanks
     });
 };

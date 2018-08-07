@@ -27,7 +27,7 @@ const initialState = {
     dir: keyboard.DOWN
 };
 
-export const playerTankReducer = (state = initialState, action = {}) => {
+export const enemyTankReducer = (state = initialState, action = {}) => {
     switch (action.type) {
         case EVENT_KEY_DOWN:
             const {keyCode, map} = action;

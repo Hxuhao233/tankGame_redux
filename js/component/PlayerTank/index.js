@@ -1,19 +1,14 @@
-import {renderContext} from "../../tools/tools";
 import {connect} from "../../redux/index";
 import {action_key_down, action_key_up} from "./action";
 import Tank from '../common/Tank';
 
 class PlayerTank extends Tank{
-    constructor (){
-        super();
-        this.context = renderContext().context;
-    }
     bindEvent (props) {
         document.body.addEventListener('keydown', props.onKeyDown);
         document.body.addEventListener('keyup', props.onKeyUp);
     }
     componentWillUpdate (newProps, oldProps) {
-        if(oldProps && newProps.tank_player === oldProps.tank_player){
+        if(oldProps && newProps.playerTank === oldProps.playerTank){
             return false;
         }
         return true;
@@ -23,8 +18,8 @@ class PlayerTank extends Tank{
             this.bindEvent(props);
             this.inited = true;
         }
-        this.context.clearRect(0,0,500,500);
-        this.paintTank(props.tank_player);
+        this.clearCanvas();
+        this.paintTank(props.playerTank);
     }
 }
 export default connect(state => state, (dispatch, getState) => ({

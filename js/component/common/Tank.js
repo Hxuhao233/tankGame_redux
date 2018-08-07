@@ -1,8 +1,11 @@
 import {
     tankSize,
     allImg,
+    canvasHeight,
+    canvasWith
 } from '../../constant/config';
 import {keyboard} from "../../constant";
+import {renderContext} from "../../tools/tools";
 export const getDegree = keyCode => ({
     [keyboard.LEFT]: 270,
     [keyboard.RIGHT]: 90,
@@ -13,7 +16,11 @@ const animationFrames = [1,2,3,4,5,6,7,8];
 
 class Tank {
     constructor (){
+        this.context = renderContext().context;
         this.frameIndex = 0;
+    }
+    clearCanvas(){
+        this.context.clearRect(0, 0, canvasWith, canvasHeight);
     }
     paintTank(config){
         if(!this.context){

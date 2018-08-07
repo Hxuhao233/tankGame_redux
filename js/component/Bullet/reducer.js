@@ -46,8 +46,8 @@ export const bulletReducer = (state = initialState, action = {}) => {
             });
         case EVENT_BULLET_FLY:
             const bullets = list.slice();
-            const {map, tank_player, enemyTanks} = action;
-            const tankList = [tank_player, enemyTanks];
+            const {map, playerTank, enemyTanks} = action;
+            const tankList = [playerTank, enemyTanks];
             bullets.forEach(bullet => {
                 if(bullet.isCollided){
                     console.error('EVENT_BULLET_FLY error');
