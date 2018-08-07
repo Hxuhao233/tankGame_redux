@@ -48,12 +48,13 @@ export const MAP = {
 
 export const AppConfig = {
     level: 1,
-    enemy: {
-        numbers: 3,
-        renderGap: 3000,
-        pos: [{x: tileSize * 2, y: 0}, {x: tileSize * 10, y: 0}, {x: tileSize * 18, y: 0}]
-    },
-    enemyTanks:[],
+    renderGap: 3000,
+    enemyTanks:[
+        {x: tileSize * 2, y: 0, dir: keyboard.RIGHT},
+        {x: tileSize * 10, y: 0, dir: keyboard.LEFT},
+        {x: tileSize * 18, y: 0, dir: keyboard.RIGHT},
+        {x: tileSize * 22, y: 0, dir: keyboard.LEFT, isAggressive:true},
+    ],
     player: {
         x: tileSize * 9,
         y: tileSize * 24,

@@ -7,6 +7,7 @@ import {
 } from '../../constant/index';
 const {LEFT, RIGHT, UP, DOWN} = keyboard;
 import {timer} from '../../tools/tools';
+import {tileSize} from '../../constant/config';
 import {fireBullet} from '../Bullet/action';
 
 let _timer;
@@ -15,26 +16,28 @@ const getRandom = () => Math.floor(0.5 - Math.random());
 const getRandomDIR = dir => {
     return dirList[(dirList.indexOf(dir) + 1) % (dirList.length)]
 };
-
-// const getRandomDIR = dir => {
-//     // console.log('uuuuu', dirList.indexOf(dir) + 1, dirList.length);
-//     let
-//         len = dirList.length,
-//         next = (dirList.indexOf(dir) + getRandom());
-//     if(next < 0){
-//         next = len - next;
-//     }
-//     next = next % len;
-//     console.log('uuuuu', next);
-//     return dirList[next]
-// };
+const getPlayerDIR = (enemy, player) => {
+    const horizonSame = Math.abs(enemy.x - player.x) < tileSize;
+    const isLeft = enemy.x - player.x > 0;
+    const isTop = enemy.y - player.y > 0;
+    if(horizonSame){
+        return isTop ? UP : DOWN;
+    }else{
+        return isLeft ? LEFT : RIGHT;
+    }
+};
 
 const onInterval = (dispatch, getState) => () => {
-    const {list} = getState().enemy;
+    const state = getState();
+    const {list} = state.enemy;
     if(list && list.length){
         let changeDirList = [];
         list.forEach((item) => {
-            if(item.isHitWall){
+            if(item.isAggressive){
+                changeDirList.push(Object.assign({}, item, {
+                    dir: getPlayerDIR(item, state.playerTank)
+                }));
+            }else if(item.isHitWall){
                 changeDirList.push(Object.assign({}, item, {
                     dir: getRandomDIR(item.dir)
                 }));
@@ -49,7 +52,7 @@ const onInterval = (dispatch, getState) => () => {
         // 移动
         dispatch({
             type: ENEMY_TANK_MOVING,
-            map: getState().map
+            map: state.map
         });
         // 发射子弹
         list.forEach(fireBullet(dispatch, getState));
@@ -58,13 +61,10 @@ const onInterval = (dispatch, getState) => () => {
         _timer = null;
     }
 };
-export const action_renderTank = (pos, id) => (dispatch, getState) => {
+export const action_renderTank = (tank) => (dispatch, getState) => {
     dispatch({
         type: RENDER_ENEMY_TANK,
-        pos,
-        id,
-        renderTime: Date.now(),
-        dir: keyboard.LEFT
+        tank
     });
     if(!_timer){
         _timer = timer.setInterval(onInterval(dispatch, getState));

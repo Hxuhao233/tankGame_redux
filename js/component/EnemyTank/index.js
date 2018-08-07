@@ -1,25 +1,28 @@
 import {connect} from "../../redux/index";
+import {keyboard} from "../../constant/index";
 import Tank from '../common/Tank';
 import {action_renderTank} from "../EnemyTank/action";
 
 class enemyTank extends Tank{
     constructor(props){
         super(2);
-        this.renderEnemyList(props.parentProps.enemy, props.renderTank);
+        this.renderEnemyList(props.parentProps.enemyTanks, props.parentProps.renderGap, props.renderTank);
     }
     componentWillUpdate (newProps, oldProps) {
         return !oldProps || newProps.enemy !== oldProps.enemy;
     }
-    renderEnemyList(config, renderTank){
-        let numbers = config.numbers;
-        let posList = config.pos;
+    renderEnemyList(tankList, renderGap, renderTank){
+        let list = tankList.slice();
+        let count = 1;
         let timer = window.setInterval(() => {
-            if(numbers < 0){
+            if(list.length === 0){
                 return window.clearInterval(timer);
             }
-            let randomPos = posList[(posList.length - 1) % numbers--];
-            renderTank(randomPos, 'enemy_'+(numbers+1));
-        }, config.renderGap);
+            let tank = list.shift();
+            tank.dir = tank.dir || keyboard.DOWN;
+            tank.id = 'enemy_'+(count++);
+            renderTank(tank);
+        }, renderGap);
     }
     render(props){
         this.clearCanvas();

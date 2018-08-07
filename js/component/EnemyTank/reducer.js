@@ -53,13 +53,14 @@ export const enemyTankReducer = (state = initialState, action = {}) => {
             break;
         case RENDER_ENEMY_TANK:
             let _list = list.slice();
-            const {pos, dir, id} = action;
-            if(pos && !_list.some(item => item.id === id)){
+            const {x, y, dir, id, isAggressive} = action.tank;
+            if(!_list.some(item => item.id === id)){
                 _list.push({
-                    speed:config.speed,
+                    speed: config.speed,
                     dir,
-                    x: pos.x,
-                    y: pos.y,
+                    x,
+                    y,
+                    isAggressive,
                     id,
                     size: config.tankSize,
                     isHitWall: false
