@@ -49,7 +49,7 @@ export const MAP = {
 export const AppConfig = {
     level: 1,
     enemy: {
-        numbers: 1,
+        numbers: 6,
         renderGap: 1000,
         pos: [{x: tileSize * 2, y: 0}, {x: tileSize * 10, y: 0}, {x: tileSize * 18, y: 0}]
     },

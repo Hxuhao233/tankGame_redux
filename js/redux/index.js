@@ -47,15 +47,16 @@ export const combineReducer = obj => {
 };
 // highOrderComponent
 const noneFunc = function () {};
-const defaultChildPropsHandler = function (state, parentProps) {
+const defaultMapStateToProps = function (state, parentProps) {
     return Object.assign({}, state, {parentProps});
 };
-export const connect = (childPropsHandler = defaultChildPropsHandler, dispatchPropHandler = noneFunc) => (Component = noneFunc) => {
+export const connect = (mapStateToProps = defaultMapStateToProps, mapDispatchToProps = noneFunc) => (Component = noneFunc) => {
+    // const dispatchProps = mapDispatchToProps(dispatch, getState);
     const getProps = (parentProps) => {
         return Object.assign(
             {},
-            childPropsHandler(getState(), parentProps),
-            dispatchPropHandler(dispatch, getState)
+            mapStateToProps(getState(), parentProps),
+            mapDispatchToProps(dispatch, getState)
         );
     };
     return class WrapComponent extends Component {

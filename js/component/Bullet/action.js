@@ -1,4 +1,4 @@
-import {EVENT_BULLET_FLY, RENDER_BULLET, REPAINT_MAP} from '../../constant/index';
+import {EVENT_BULLET_FLY, RENDER_BULLET, REPAINT_MAP, BROKE_TANK} from '../../constant/index';
 import {bulletSpeed} from '../../constant/config';
 import {timer} from '../../tools/tools';
 
@@ -24,7 +24,7 @@ export const fireBullet = (dispatch, getState) => (tank) => {
 };
 
 export const moveBullet = (dispatch, getState) => {
-    const {map, bullets, playerTank, enemyTanks} = getState();
+    const {map, bullets, playerTank, enemy} = getState();
     if(!bullets.list || !bullets.list.length){
         timer.clearInterval(_timer);
         _timer = null;
@@ -33,11 +33,16 @@ export const moveBullet = (dispatch, getState) => {
         type: EVENT_BULLET_FLY,
         map,
         playerTank,
-        enemyTanks
+        enemyTanks: enemy.list
     });
 };
 
 export const brokeGrid = brokenGrids => ({
     type: REPAINT_MAP,
     brokenGrids
+});
+
+export const brokeTank = tankIdList => ({
+    type: BROKE_TANK,
+    tankIdList
 });

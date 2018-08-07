@@ -5,6 +5,7 @@ import {
 } from '../../constant/index';
 import {getTankNextPos} from '../../tools/tools';
 import * as config from '../../constant/config';
+import {BROKE_TANK} from "../../constant";
 
 const initialState = {
     list: [],
@@ -13,6 +14,14 @@ const initialState = {
 export const enemyTankReducer = (state = initialState, action = {}) => {
     const {list} = state;
     switch (action.type) {
+        case BROKE_TANK:
+            console.log('action.tankIdList', action.tankIdList)
+            let remainList = list.filter(item => {
+                return !(action.tankIdList.indexOf(item.id) >= 0);
+            });
+            console.log('remainList', remainList.map(i => i.id));
+
+            return Object.assign({}, state, {list: remainList});
         case ENEMY_TANK_MOVING:
             let newList = list.map(function (item) {
                 const nextPos = getTankNextPos(item, action.map);
@@ -46,7 +55,6 @@ export const enemyTankReducer = (state = initialState, action = {}) => {
             return Object.assign({}, state, {list: _newList});
             break;
         case RENDER_ENEMY_TANK:
-            console.log('enemy list', action);
             let _list = list.slice();
             const {pos, dir, id} = action;
             if(pos && !_list.some(item => item.id === id)){

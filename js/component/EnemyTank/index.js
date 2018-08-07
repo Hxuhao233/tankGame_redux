@@ -18,7 +18,7 @@ class enemyTank extends Tank{
                 return window.clearInterval(timer);
             }
             let randomPos = posList[(posList.length - 1) % numbers--];
-            renderTank(randomPos, numbers+1);
+            renderTank(randomPos, 'enemy_'+(numbers+1));
         }, config.renderGap);
     }
     render(props){

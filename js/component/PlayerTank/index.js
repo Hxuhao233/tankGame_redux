@@ -17,7 +17,9 @@ class PlayerTank extends Tank{
     }
     render(props){
         this.clearCanvas();
-        this.paintTank(props.playerTank);
+        if(!props.playerTank.isBroken){
+            this.paintTank(props.playerTank);
+        }
     }
 }
 export default connect(undefined, (dispatch, getState) => ({

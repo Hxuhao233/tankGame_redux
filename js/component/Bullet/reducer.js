@@ -28,6 +28,19 @@ const update = (bullet) => {
 };
 export const bulletReducer = (state = initialState, action = {}) => {
     let {list, brokeGrids, brokeTanks} = state;
+    const checkBrokenTank = (bullet, tank) =>{
+        if(!tank || bullet.id === tank.id) {
+            return;
+        }
+        // 判断是否碰到坦克
+        let collideTank = checkIntersect(bullet, tank);
+        if(collideTank){
+            if(brokeTanks.indexOf(tank.id) === -1){
+                brokeTanks = brokeTanks.concat(tank.id);
+            }
+        }
+    };
+
     switch (action.type) {
         case RENDER_BULLET:
             const {tank} = action;
@@ -48,7 +61,6 @@ export const bulletReducer = (state = initialState, action = {}) => {
         case EVENT_BULLET_FLY:
             const bullets = list.slice();
             const {map, playerTank, enemyTanks} = action;
-            const tankList = [playerTank, enemyTanks];
             bullets.forEach(bullet => {
                 if(bullet.isCollided){
                     console.error('EVENT_BULLET_FLY error');
@@ -63,13 +75,19 @@ export const bulletReducer = (state = initialState, action = {}) => {
                     bullet.isCollided = true;
                     brokeGrids = brokeGrids.concat(collideGrid);
                 }
-                tankList.forEach(tank => {
-                    if(tank && bullet.id !== tank.id){
-                        // 判断是否碰到坦克
-                        let collideTank = checkIntersect(bullet, tank);
-                        brokeTanks = brokeTanks.concat(tank);
+                if(collideGrid.length === 0){
+                    /*
+                   * 判断是否碰到坦克
+                   * */
+                    var bulletForPlayer = bullet.id.indexOf('enemy') !== -1;
+                    if(bulletForPlayer){
+                        checkBrokenTank(bullet, playerTank);
+                    }else{
+                        enemyTanks.forEach(tank => {
+                            checkBrokenTank(bullet, tank);
+                        });
                     }
-                });
+                }
             });
             return {
                 list: bullets.filter(bullet => !bullet.isCollided),

@@ -8,7 +8,7 @@ import {keyboard} from '../../constant/index';
 import {
     renderContext,
 } from '../../tools/tools';
-import {fireBullet, moveBullet, brokeGrid} from "./action";
+import {fireBullet, brokeTank, brokeGrid} from "./action";
 
 class BulletCanvas {
     constructor (props){
@@ -18,10 +18,12 @@ class BulletCanvas {
         this.bindEvent(props);
     }
     componentWillUpdate (newProps, oldProps) {
-        if(newProps && newProps.bullets.brokeGrids.length){
-            let isChange = newProps.bullets.brokeGrids !== oldProps.bullets.brokeGrids;
-            if(isChange){
+        if(newProps && oldProps && newProps.bullets){
+            if(newProps.bullets.brokeGrids !== oldProps.bullets.brokeGrids){
                 newProps.upDateMap(newProps.bullets.brokeGrids);
+            }
+            if(newProps.bullets.brokeTanks !== oldProps.bullets.brokeTanks){
+                newProps.brokeTank(newProps.bullets.brokeTanks);
             }
         }
         return true;
@@ -47,5 +49,8 @@ export default connect(undefined, (dispatch, getState) => ({
     },
     upDateMap(brokenGrids) {
         dispatch(brokeGrid(brokenGrids));
+    },
+    brokeTank(tankIdList) {
+        dispatch(brokeTank(tankIdList));
     }
 }))(BulletCanvas);

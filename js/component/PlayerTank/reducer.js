@@ -9,15 +9,23 @@ import {
 } from '../../constant/index';
 const {UP, DOWN} = keyboard;
 import {getTankNextPos} from '../../tools/tools';
+import {BROKE_TANK} from "../../constant";
 
 const initialState = {
     id: 'player_1',
     size: config.tankSize,
+    isBroken: false,
     dir: DOWN
 };
 
 export const playerTankReducer = (state = initialState, action = {}) => {
     switch (action.type) {
+        case BROKE_TANK:
+            if(action.tankIdList.indexOf(state.id) >= 0){
+                return Object.assign({}, state, {
+                    isBroken: true
+                });
+            }
         case TANK_MOVING:
             const nextPos = getTankNextPos(state, action.map);
             if(nextPos){
