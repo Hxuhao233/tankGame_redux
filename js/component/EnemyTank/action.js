@@ -40,9 +40,6 @@ const onInterval = (dispatch, getState) => () => {
                 }));
             }
         });
-
-        // const playerTank =
-
         if(changeDirList.length){
             dispatch({
                 type: CHANGE_ENEMY_DIR,
@@ -72,26 +69,3 @@ export const action_renderTank = (pos, id) => (dispatch, getState) => {
         _timer = timer.setInterval(onInterval(dispatch, getState));
     }
 };
-
-
-// const {enemy} = props.parentProps;
-// let numbers = enemy.numbers;
-// let pos = enemy.pos;
-// let timer = window.setInterval(() => {
-//     if(numbers < 0){
-//         return window.clearInterval(timer);
-//     }
-//     props.renderTank();
-//     let list = this.state.enemyTanks.slice(),
-//         randomPos = pos[(pos.length - 1) % numbers--];
-//     if(!randomPos){
-//         return;
-//     }
-//     list.push({
-//         x: randomPos.x,
-//         y: randomPos.y
-//     });
-//     this.setState(Object.assign({}, this.state, {
-//         enemyTanks: list
-//     }));
-// }, enemy.renderGap);

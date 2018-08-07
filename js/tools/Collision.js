@@ -163,7 +163,7 @@ export function bulletMapCollision(bullet,mapobj){
             if(mapContent == GRID){
                 result = true;
                 // //墙被打掉
-                mapChangeIndex.push([rowIndex,colIndex+i]);
+                mapChangeIndex.push([rowIndex+i,colIndex]);
             }
         }
     }
