@@ -15,8 +15,7 @@ class PlayerTank extends Tank{
     componentWillUpdate (newProps, oldProps) {
         return !oldProps || newProps.playerTank !== oldProps.playerTank;
     }
-    render(){
-        const {props} = this;
+    render(props){
         this.clearCanvas();
         this.paintTank(props.playerTank);
     }

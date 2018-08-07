@@ -35,13 +35,13 @@ class BulletCanvas {
         document.body.addEventListener('click', props.fireBullet);
     }
     render(props){
-        const {list} = this.props.bullets;
+        const {list} = props.bullets;
         this.context.clearRect(0, 0, canvasWith, canvasHeight);
         return list.forEach(bullet => !bullet.isCollided && this.paintBullet(bullet));
     }
 }
 
-export default connect(state => state, (dispatch, getState) => ({
+export default connect(undefined, (dispatch, getState) => ({
     fireBullet () {
         fireBullet(getState().playerTank)(dispatch, getState);
     },

@@ -15,8 +15,8 @@ class MapCanvas {
     componentWillUpdate (newProps, oldProps) {
         return !oldProps || newProps.map !== oldProps.map;
     }
-    render () {
-        const {tiles} = this.props.map;
+    render (props) {
+        const {tiles} = props.map;
         const mapRows = tiles.length;
         const mapCols = tiles[0].length;
         for (let rowCtr=0;rowCtr<mapRows;rowCtr++) {

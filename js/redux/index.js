@@ -83,7 +83,7 @@ export const connect = (childPropsHandler = defaultChildPropsHandler, dispatchPr
                 component: this
             });
             // 渲染
-            this.render && this.render();
+            this.render && this.render(props);
         }
     }
 };
